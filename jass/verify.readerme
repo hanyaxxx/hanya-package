@@ -1,0 +1,65 @@
+表单验证器使用:
+
+
+1.new verify
+
+template:{  //表单验证的基本模板
+
+monitor:'onchange', //监听事件的类型
+pattern:null,    // 正则用于验证
+stop:true,  //是否冒泡
+err:{    
+el :       // 显示错误信息的元素
+tips:      //错误时的提示
+action:      // 错误提示时间
+custom:     // 自定义错误出现时的回调函数
+}
+}
+stateId="class"  //寻找个表单元素的依据 
+submit:{
+el:''                  // 提交表单的元素
+monitor:'click'    // 表单在click时开启验证
+global:true,   //是否开启全局检查
+getResult:()={}    //获取表单验证结果
+err:{  //提交时的操作
+custom:()={}
+}
+}
+
+2.verify.custom {el: template:{}} :// 如果某些元素不适用模板内的验证规则,给他自定义规则 
+
+3.verify.regVerifyEls{  match:, filter:  } //注册自定义验证的元素 
+
+使用:
+
+const verify=new verify({
+pattern:/.{1}/  //表单的值不能是空的
+}) //初始化 
+
+// 查询表单内哪些元素是可以被验证的 
+verify.regVerifyEls(
+match: input|input[type=radio]|input[name]  //匹配适用的元素 按css选择器的规则
+filter:input[state=off] // 过滤不需要的元素
+)
+
+为radio类型的input自定义规则
+verify.custom(
+el:input[radio]
+template:{
+pattern:... 
+}
+)
+
+为名字为phone类型的input自定义规则
+verify.custom(
+el:input[name=phone]
+template:{
+pattern:... 
+err:{    
+el :  err     // 显示错误信息的元素
+tips:    '手机号码输入错误'  //错误时的提示
+action:  3s    // 错误提示时间
+custom:  (tips)=> err.value= '手机号长度要在xx位'   // 自定义错误出现时的回调函数
+}
+}
+)
