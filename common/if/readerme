@@ -1,0 +1,172 @@
+优化If-else多分支使用的情况,优化代码结构.
+
+If() 构造函数 
+of() 存条件 
+fn() 存函数体
+then() 检查条件并执行
+支持链式调用 
+支持基本 if-else结构 
+支持异步调用 
+支持条件与函数体分离 
+
+基本使用:
+
+示范1:
+If(value===1,value====2).then(()=>{log(1)},()=>{log(2)})
+或
+If(value===1,value====2)
+.then(()=>{log(1)})
+.then(()=>{log(2)})
+或:
+If(value===1)
+.then(()=>{log(1)})
+.then(()=>{log(2)})
+
+示范2:
+
+If([value===1,value===2,value===3,....])
+.then([
+  ()=>log(1),
+  ()=>log(2),
+  ()=>log(3),
+  .....
+])
+
+
+延迟使用:
+
+const newIf=If(value===1).fn(()=>{log(1)})
+
+setTimeOut(newIf.then()) //输出1
+
+
+
+链式调用 :
+If(value===3)
+.then(()=>log(...))
+.of(value===3)
+.then(()=>log(...))
+.of(value===4)
+.then(()=>log(...))
+.of(value===5)
+.then(()=>log(...))
+
+串联使用:
+If(value===3)
+.then(()=>log(1))   // 输出1
+.then(()=>log(2))  // 输出2 
+.then(()=>log(3)) // 输出3
+
+
+
+多列表使用 比如: 
+
+if(value===1){
+
+}else if(value===2){
+
+}else if(value===3){
+
+}else if(value===4){
+
+}else if(value===5){
+
+}else if(value===6){
+
+}
+
+//数组语法
+condition=[
+  value===1,
+  value===2,
+  value===3,
+  value===4,
+  value===5,
+  value===6,
+]
+
+//对象语法
+condition={
+  check1:value===1,
+  check2:value===1,
+}
+//
+action={
+  action1:()=>{log(1)},
+  action2:()=>{log(2)},
+  ........
+}
+value=3
+If(condition).then(action) // 输出3
+
+高级使用: 
+
+循环体使用
+const newIf=If()
+value=3
+[].forEach((value,index)=> newIf.of(value===index).fn(()=>log(index)))
+
+newIf.then() // 输出3 
+
+
+
+条件与函数体分离:
+const newIf=If()
+newIf.of(value===1).fn(()=>log(1))
+newIf.then() //输出1 
+
+条件作为一个函数体使用+传递参数 
+
+If(()=>{
+  return {
+    boolean:true, // 作为函数使用必须返回一个对象,并且有boolean值
+    value,
+    age,
+    name,
+    ....
+  }
+}).then(({value,age,name})=>{
+  log(value,age,name)
+}) 
+
+
+
+
+异步使用+参数传递+延迟检查+重复利用
+
+const newIf=If()
+
+let value=0
+newIf.of(()=> {
+  
+  return {
+    boolean: value===3  
+    value:value,
+    state: value===3?通过:不通过
+    text:'...'
+    ...
+}
+} )
+
+setTimeout(()=>{
+value=3
+} ,2000)
+
+setTimeout( ()=>{
+  newIf.then(({value,state,...})=>{
+    log(value,state) // value=0,state=不通过
+  })
+} ,1000)
+
+setTimeout( ()=>{
+  newIf.then(({value,state,...})=>{
+    log(value,state) // value=3 state=通过
+  })
+} ,5000)
+
+
+
+
+
+
+
