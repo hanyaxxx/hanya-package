@@ -1,0 +1,35 @@
+router使用 
+  path=路由器的路径  
+  router-view-id=视图容器 
+  router-view-id需要填写dom的选取器名称比如: router-view-id="#dom" router-view-id=".dom"
+  如果不填写默认替换当前标签下的内容
+  
+  <div path="dom" router-view-id="#dom" class="backgroundblack">
+  
+  </div>
+  
+  router 根据dom上的path属性判断该节点是否为路由
+  支持子路由比如:
+  <div id='dom'>
+   <ul>.... 
+   </ul>
+   <div path='children'> // 子路由默认填充父路径 此时地址栏显示 url/dom/children 
+   </div>
+  </div>
+  
+  
+  
+  自带历史记录功能 
+  
+  
+  //启动
+    let router = new Router({
+    homepage: '', //首页地址 
+    entrance: '.root', //html根元素
+  });
+  
+  接口
+  routerJumpEnd =fn  //路由完成跳转时调用 传入参数path,form 当前路径,和之前的路径 
+  routerBeforeJump=fn //路由准备跳转时调用 传入参数path,form 当前路径,和之前的路径 
+  jumpTo(path) // 指定跳转目标路由
+  
