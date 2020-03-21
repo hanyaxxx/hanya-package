@@ -1,7 +1,8 @@
-npm i ya-if
+优化If-else多分支使用的情况,
+优化嵌套If-else分支使用情况
+优化代码结构.
 
-优化If-else多分支使用的情况,优化代码结构.
-
+特性:
 If() 构造函数 
 of() 存条件 
 fn() 存函数体
@@ -10,6 +11,58 @@ then() 检查条件并执行
 支持基本 if-else结构 
 支持异步调用 
 支持条件与函数体分离 
+
+示范
+
+解决-> 嵌套多分支的情况:
+if(){
+  if(){
+    if(){
+       if(){
+        if(){
+          if(){
+    }    
+    }  
+    } 
+    }
+  }
+}
+
+const newIf=If()
+newIf.of(value===1)
+.then(
+   ()=>newIf.of(value===2)
+  .then(()=>newIf.of(value===3))
+  .then(()=>newIf.of(value===4)
+  .then(()=>newIf.of(value===5)
+  .then(...)))
+  )
+)
+
+
+推荐:
+.....
+action5=()=>newIf.of(value==4).then(action7)
+action4=()=>newIf.of(value==4).then(action6)
+action3=()=>newIf.of(value==4).then(action5)
+action3=()=>newIf.of(value==4).then(action4)
+action2=()=>newIf.of(value==3).then(action3)
+action1=()=>newIf.of(value==2).then(action2)
+newIf.of(value===1).then(action1)
+
+
+
+可用循环优化:
+arr=[1,2,3,4,5,6].map((item,index)=>{
+const fn=()=>newIf.of(value===index).then(arr[index+1])
+return fn
+})
+
+
+newIf.of(v===1).then(arr[0])
+
+以上三段代码等价
+
 
 基本使用:
 
@@ -165,9 +218,6 @@ setTimeout( ()=>{
     log(value,state) // value=3 state=通过
   })
 } ,5000)
-
-
-
 
 
 
