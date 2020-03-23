@@ -1,4 +1,4 @@
-If()构造函数说明:
+If() 函数说明:
 
 特性:
 优化If-else多分支使用的情况,
@@ -10,16 +10,112 @@ If()构造函数说明:
 支持条件与函数体分离 
 
 使用:
- If() 实列化 
-接口:
-const newIf=If() 实列化 
-newIf.of() 存条件 
-newIf.fn() 存函数体
-newIf.then() 检查条件并执行
+ If() //生成一个If实列化对象 
+ const newIf=If() 实列化 
+ 其他接口:
+ newIf.of() 存放条件 
+ newIf.fn() 存放函数体
+ newIf.then() 检查条件并执行
 
+ 基本用法:
+ If(...) // 参数存放类型为布尔值, 可接收数组或者对象或者函数 
+ If(value===1)
+ If([value===1,value===2])
+ If({check1:value===1,check2:value===2})
+ If([()=>{}])  // 函数需要返回布尔值 
+ 
+ If().then(arg)  // then 的参数存放函数执行体 类型为数组, 对象,函数,函数执行体可接收参数,
+ .then([fn1,fn2])
+ .then({fn1:fn1})
+ .then(fn1)
+ 
+ 比如:
+ if(value===1){
+   pass()  
+ }else{
+    error()
+ }
+ 
+等价于:
+If(value===1).then(pass).then(error)  
+或者
+if(value===1).then(pass,error)
+
+
+示范1:
+If(value===1,value====2).then(()=>{log(1)},()=>{log(2)})
+
+或
+If(value===1,value====2)
+.then(()=>{log(1)})
+.then(()=>{log(2)})
+或:
+If(value===1)
+.then(()=>{log(1)})
+.then(()=>{log(2)})
+
+示范2:
+
+If([value===1,value===2,value===3,....])
+.then([
+  ()=>log(1),
+  ()=>log(2),
+  ()=>log(3),
+  .....
+])
+
+多列表使用 比如: 
+
+if(value===1){
+
+}else if(value===2){
+
+}else if(value===3){
+
+}else if(value===4){
+
+}else if(value===5){
+
+}else if(value===6){
+
+}
+
+//数组语法
+condition=[
+  value===1,
+  value===2,
+  value===3,
+  value===4,
+  value===5,
+  value===6,
+]
+
+//对象语法
+condition={
+  check1:value===1,
+  check2:value===1,
+}
+//
+action={
+  action1:()=>{log(1)},
+  action2:()=>{log(2)},
+  ........
+}
+value=3
+If(condition).then(action) // 输出3
+
+上面代码改成循环体使用
+const newIf=If()
+value=3
+[].forEach((value,index)=> newIf.of(value===index).fn(()=>log(index)))
+
+newIf.then() // 输出3   两段等价
+ 
+
+
+高级使用:
 
 示范
-
 解决-> 嵌套多分支的情况:
 if(){
   if(){
@@ -70,30 +166,6 @@ newIf.of(v===1).then(arr[0])
 以上三段代码等价
 
 
-基本使用:
-
-示范1:
-If(value===1,value====2).then(()=>{log(1)},()=>{log(2)})
-或
-If(value===1,value====2)
-.then(()=>{log(1)})
-.then(()=>{log(2)})
-或:
-If(value===1)
-.then(()=>{log(1)})
-.then(()=>{log(2)})
-
-示范2:
-
-If([value===1,value===2,value===3,....])
-.then([
-  ()=>log(1),
-  ()=>log(2),
-  ()=>log(3),
-  .....
-])
-
-
 延迟使用:
 
 const newIf=If(value===1).fn(()=>{log(1)})
@@ -117,59 +189,6 @@ If(value===3)
 .then(()=>log(1))   // 输出1
 .then(()=>log(2))  // 输出2 
 .then(()=>log(3)) // 输出3
-
-
-
-多列表使用 比如: 
-
-if(value===1){
-
-}else if(value===2){
-
-}else if(value===3){
-
-}else if(value===4){
-
-}else if(value===5){
-
-}else if(value===6){
-
-}
-
-//数组语法
-condition=[
-  value===1,
-  value===2,
-  value===3,
-  value===4,
-  value===5,
-  value===6,
-]
-
-//对象语法
-condition={
-  check1:value===1,
-  check2:value===1,
-}
-//
-action={
-  action1:()=>{log(1)},
-  action2:()=>{log(2)},
-  ........
-}
-value=3
-If(condition).then(action) // 输出3
-
-高级使用: 
-
-循环体使用
-const newIf=If()
-value=3
-[].forEach((value,index)=> newIf.of(value===index).fn(()=>log(index)))
-
-newIf.then() // 输出3 
-
-
 
 条件与函数体分离:
 const newIf=If()
