@@ -37,9 +37,9 @@ If() 函数说明:
  }
  
 等价于:
-If(value===1).then(pass).then(error)  
+If(1===1,1===2).then(pass).then(error)  //
 或者
-if(value===1).then(pass,error)
+if(1===1).then(pass,error)
 
 
 示范1:
